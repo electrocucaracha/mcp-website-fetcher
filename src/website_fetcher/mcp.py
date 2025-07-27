@@ -17,6 +17,8 @@
 
 import httpx
 from mcp.server.fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import JSONResponse, Response
 
 
 class Server:
@@ -42,6 +44,19 @@ class Server:
                 response = await client.get(url)
                 response.raise_for_status()
                 return response.text
+
+        @self._mcp.custom_route("/health", methods=["GET"])
+        def health_check(_: Request) -> Response:
+            """
+            Endpoint to perform a healthcheck on. This endpoint can primarily be used Docker
+            to ensure a robust container orchestration and management is in place. Other
+            services which rely on proper functioning of the API service will not deploy if this
+            endpoint returns any other HTTP status code except 200 (OK).
+
+            Returns:
+                Returns a JSON response with the health status
+            """
+            return JSONResponse({"status": "ok"})
 
     @property
     def mcp(self) -> FastMCP:
