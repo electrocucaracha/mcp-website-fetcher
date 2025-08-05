@@ -15,6 +15,7 @@
 
 """Module the provides the implementation of a MCP server that fetches web content."""
 
+import git
 import httpx
 from mcp.server.fastmcp import FastMCP
 from starlette.requests import Request
@@ -34,6 +35,7 @@ class Server:
         self._mcp = FastMCP(
             name="MCP WebSite Fetcher", host=host, port=port, stateless_http=True
         )
+        self._metadata = None
 
         @self._mcp.tool(name="fetch", description="Get website content")
         async def fetch_website(url: str) -> str:
@@ -57,6 +59,48 @@ class Server:
                 Returns a JSON response with the health status
             """
             return JSONResponse({"status": "ok"})
+
+        @self._mcp.custom_route("/.well-known/mcp.json", methods=["GET"])
+        async def well_known_mcp(_: Request) -> Response:
+            """
+            Endpoint to return MCP metadata information. This endpoint is used by MCP to
+            determine what tools, prompts and resources are available and how to be used.
+
+            Returns:
+                Returns a JSON response with the metadata information
+            """
+
+            if self._metadata is None:
+                features = []
+                for items, item_type in [
+                    (await self._mcp.list_tools(), "tool"),
+                    (await self._mcp.list_prompts(), "prompt"),
+                    (await self._mcp.list_resources(), "resource"),
+                ]:
+                    for item in items:
+                        t = vars(item)
+                        t["type"] = item_type
+                        features.append(t)
+
+                repo = git.Repo(search_parent_directories=True)
+
+                self._metadata = JSONResponse(
+                    {
+                        "name": self._mcp.name,
+                        "description": "MCP Server that fetches websites content of a given URL.",
+                        "schemaVersion": "2025-06-18",
+                        "transport": ["streamable-http"],
+                        "language": "python",
+                        "authentication": [],
+                        "git": {
+                            "repository": repo.remote().url,
+                            "commitSHA": repo.head.object.hexsha,
+                        },
+                        "features": features,
+                    }
+                )
+
+            return self._metadata
 
     @property
     def mcp(self) -> FastMCP:

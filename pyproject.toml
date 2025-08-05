@@ -4,7 +4,8 @@ version = "0.0.1"
 description = "MCP server implementation that provides a simple website fetching service"
 dependencies = [
     "click",
-    "mcp[cli]"
+    "mcp[cli]",
+    "gitpython",
 ]
 
 [build-system]
