@@ -57,4 +57,5 @@ jobs:
           VALIDATE_CHECKOV: false
           VALIDATE_NATURAL_LANGUAGE: false
           LINTER_RULES_PATH: /
+          EDITORCONFIG_FILE_NAME: .editorconfig-checker.json
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch || 'main'}}

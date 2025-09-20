@@ -21,13 +21,14 @@ lint: cleanup
 	-e LINTER_RULES_PATH=/ \
 	-e VALIDATE_CHECKOV=false \
 	-e VALIDATE_NATURAL_LANGUAGE=false \
+	-e EDITORCONFIG_FILE_NAME=.editorconfig-checker.json \
 	-e DEFAULT_BRANCH=main \
 	ghcr.io/super-linter/super-linter
 
 .PHONY: fmt
 fmt: cleanup
 	command -v shfmt > /dev/null || curl -s "https://i.jpillora.com/mvdan/sh!!?as=shfmt" | bash
-	shfmt -l -w -s .
+	shfmt -l -w -s -i 4 .
 	command -v yamlfmt > /dev/null || curl -s "https://i.jpillora.com/google/yamlfmt!!" | bash
 	yamlfmt -dstar **/*.{yaml,yml}
 	command -v prettier > /dev/null || npm install prettier
