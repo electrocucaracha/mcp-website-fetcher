@@ -31,6 +31,26 @@ docker run -d -p 8000:8000 ghcr.io/electrocucaracha/mcp-website-fetcher:main
 
 > This will start the MCP server and expose it on port 8000.
 
+## How to setup a development environment
+
+This project includes **Dev Container** support, making it easy to get started with a fully configured development environment. This ensures consistency across development setups and allows contributors to begin working without manual environment configuration.
+
+### Option 1: GitHub Codespaces
+
+You can launch a cloud-based development environment instantly:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?repo=electrocucaracha/mcp-website-fetcher)
+
+### Option 2: Local Dev Container (Visual Studio Code)
+
+1. Install [Visual Studio Code](https://code.visualstudio.com/).
+1. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
+1. Ensure you have a container runtime installed and running:
+   - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Windows/macOS)
+   - [Docker Engine](https://docs.docker.com/engine/install/) or [Podman](https://podman.io/) (Linux)
+1. Open this repository in Visual Studio Code.
+1. When prompted, reopen the project in a Dev Container.
+
 ## Testing Locally
 
 Once the container is running, you can interact with the server using `curl` to test its capabilities.
