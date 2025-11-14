@@ -14,7 +14,7 @@ repos:
       - id: check-yaml
       - id: check-toml
   - repo: https://github.com/psf/black
-    rev: 25.9.0
+    rev: 25.11.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/isort
@@ -23,11 +23,11 @@ repos:
       - id: isort
         name: isort (python)
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.0
+    rev: v3.21.1
     hooks:
       - id: pyupgrade
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.14.4"
+    rev: "v0.14.5"
     hooks:
       - id: ruff
         args: [--fix]
